@@ -1,0 +1,49 @@
+7.	Write a C program to check whether a given string belongs to the language defined by a Context Free Grammar (CFG)
+    S → A101A,	A → 0A | 1A | ε
+#include <stdio.h>
+#include <stdbool.h>
+bool isBelongToCFG(char *input);
+bool parseS(char *input);
+bool parseA(char *input);
+
+int main() {
+    char str1[] = "00101101";
+    char str2[] = "1101";
+    char str3[] = "1010101";
+    if (isBelongToCFG(str1)) {
+        printf("String '%s' belongs to the language.\n", str1);
+    } else {
+        printf("String '%s' does not belong to the language.\n", str1);
+    }
+
+    if (isBelongToCFG(str2)) {
+        printf("String '%s' belongs to the language.\n", str2);
+    } else {
+        printf("String '%s' does not belong to the language.\n", str2);
+    }
+
+    if (isBelongToCFG(str3)) {
+        printf("String '%s' belongs to the language.\n", str3);
+    } else {
+        printf("String '%s' does not belong to the language.\n", str3);
+    }
+
+    return 0;
+}
+bool isBelongToCFG(char *input) {
+    return parseS(input) && *input == '\0';
+}
+bool parseS(char *input) {
+    if (*input == '1') {
+        return *input++ == '1' && parseA(input) && *input++ == '0' && *input++ == '1' && parseA(input);
+    } else {
+        return false;
+    }
+}
+bool parseA(char *input) {
+    if (*input == '0' || *input == '1') {
+        return (*input == '0' || *input == '1') && parseA(input + 1);
+    } else {
+        return true;
+    }
+}
