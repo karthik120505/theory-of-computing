@@ -1,0 +1,31 @@
+2.	Write a C program to simulate a Deterministic Finite Automata (DFA) for the given language representing strings that start with 0 and end with 1
+#include <stdio.h>
+#include <stdbool.h>
+#define NUM_STATES 3
+#define ALPHABET_SIZE 2 
+int transitionTable[NUM_STATES][ALPHABET_SIZE] = {
+    {1, 0},
+    {1, 2},
+    {1, 0}
+};
+bool isAccepted(char *input) {
+    int currentState = 0;
+    for (int i = 0; input[i] != '\0'; i++) {
+        int inputSymbol = (input[i] == '0') ? 0 : 1;
+        currentState = transitionTable[currentState][inputSymbol];
+    }
+    return currentState == 2;
+}
+
+int main() {
+    char input[100];
+    printf("Enter a string: ");
+    scanf("%s", input);
+    if (isAccepted(input)) {
+        printf("String is accepted by the DFA.\n");
+    } else {
+        printf("String is not accepted by the DFA.\n");
+    }
+
+    return 0;
+}
