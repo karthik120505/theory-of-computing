@@ -1,0 +1,41 @@
+6.	Write a C program to check whether a given string belongs to the language defined by a Context Free Grammar (CFG)
+    S → 0S1 | ε
+#include <stdio.h>
+#include <stdbool.h>
+bool isBelongToCFG(char *input);
+bool parseS(char *input);
+
+int main() {
+    char str1[] = "00100";
+    char str2[] = "";
+    char str3[] = "0101";
+    if (isBelongToCFG(str1)) {
+        printf("String '%s' belongs to the language.\n", str1);
+    } else {
+        printf("String '%s' does not belong to the language.\n", str1);
+    }
+
+    if (isBelongToCFG(str2)) {
+        printf("String '%s' belongs to the language.\n", str2);
+    } else {
+        printf("String '%s' does not belong to the language.\n", str2);
+    }
+
+    if (isBelongToCFG(str3)) {
+        printf("String '%s' belongs to the language.\n", str3);
+    } else {
+        printf("String '%s' does not belong to the language.\n", str3);
+    }
+
+    return 0;
+}
+bool isBelongToCFG(char *input) {
+    return parseS(input) && *input == '\0';
+}
+bool parseS(char *input) {
+    if (*input == '0') {
+        return *input++ == '0' && parseS(input) && *input++ == '1';
+    } else {
+        return true;
+    }
+}
