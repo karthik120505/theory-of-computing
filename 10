@@ -1,0 +1,43 @@
+10.	Write a C program to find ε -closure for all the states in a Non-Deterministic Finite Automata (NFA) with ε -moves.
+#include <stdio.h>
+#include <stdbool.h>
+
+#define NUM_STATES 4
+#define ALPHABET_SIZE 2 
+int transitionTable[NUM_STATES][ALPHABET_SIZE][NUM_STATES] = {
+    {{1, 2}, {0}},
+    {{3}, {}},
+    {{3}, {}},
+    {{}, {}}
+};
+void findEpsilonClosure(int state, bool visited[]) {
+    printf("e-closure(%d): { %d", state, state);
+
+    visited[state] = true;
+
+    for (int i = 0; i < NUM_STATES; i++) {
+        if (!visited[i] && transitionTable[state][1][i] != -1) {
+            printf(", %d", i);
+            findEpsilonClosure(i, visited);
+        }
+    }
+
+    printf(" }\n");
+}
+void findAllEpsilonClosures() {
+    bool visited[NUM_STATES];
+    for (int i = 0; i < NUM_STATES; i++) {
+        visited[i] = false;
+    }
+    for (int i = 0; i < NUM_STATES; i++) {
+        if (!visited[i]) {
+            findEpsilonClosure(i, visited);
+        }
+    }
+}
+
+int main() {
+    findAllEpsilonClosures();
+
+    return 0;
+}
