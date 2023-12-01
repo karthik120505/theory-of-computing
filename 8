@@ -1,0 +1,53 @@
+8.	Write a C program to simulate a Non-Deterministic Finite Automata (NFA) for the given language representing strings that start with b and end with a
+#include <stdio.h>
+#include <stdbool.h>
+
+#define NUM_STATES 3
+#define ALPHABET_SIZE 2 
+int transitionTable[NUM_STATES][ALPHABET_SIZE][2] = {
+    {{0, 1}, {-1, -1}}, 
+    {{-1, -1}, {2, -1}},
+    {{-1, -1}, {-1, -1}} 
+bool isAccepted(char *input) {
+    int currentStates[NUM_STATES];
+    currentStates[0] = 0;
+    for (int i = 0; input[i] != '\0'; i++) {
+        int inputSymbol = (input[i] == 'a') ? 0 : 1;
+        int nextStates[NUM_STATES * 2];
+        int nextStateCount = 0;
+        for (int j = 0; j < NUM_STATES; j++) {
+            int nextState = transitionTable[currentStates[j]][inputSymbol][0];
+            if (nextState != -1) {
+                nextStates[nextStateCount++] = nextState;
+            }
+
+            nextState = transitionTable[currentStates[j]][inputSymbol][1];
+            if (nextState != -1) {
+                nextStates[nextStateCount++] = nextState;
+            }
+        }
+        for (int j = 0; j < nextStateCount; j++) {
+            currentStates[j] = nextStates[j];
+        }
+    }
+    for (int i = 0; i < NUM_STATES; i++) {
+        if (currentStates[i] == 2) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    char input[100];
+    printf("Enter a string: ");
+    scanf("%s", input);
+    if (isAccepted(input)) {
+        printf("String is accepted by the NFA.\n");
+    } else {
+        printf("String is not accepted by the NFA.\n");
+    }
+
+    return 0;
+}
